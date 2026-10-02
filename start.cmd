@@ -1,0 +1,3 @@
+@echo off
+cd /d D:\n64work\smb-cleanroom
+"C:\Users\andre\.local\bin\claude.exe" --permission-mode auto "/loop Clean-room Super Mario Bros., following CLAUDE.md and docs/DECOMP_PLAYBOOK.md. First non-N64 platform (NES): the ROM and decomp details and the web route are in CLAUDE.md. Priorities: boots and plays in the browser, everything readable, characters and sprites drawn recognisably. Publish to andrewnakas/smb-cleanroom plus GitHub Pages once playable and taint is 0, write decompgames.json and poster.png for the Decomp Games site, keep improving, keep STATUS.md current, and respect the disk and memory budget."
