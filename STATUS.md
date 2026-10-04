@@ -12,6 +12,8 @@ Update with `sh tools/publish.sh push "message"` (regenerates, assembles, refuse
 - **Art**: 93 of 117 pictures hand-drawn (all player frames, all common enemies, power-ups, blocks, pipes, clouds,
   hills, trees, castle, coral, cannon, axe, giant mushroom, explosion, vine), own font (40 glyphs), own score popups, own title board + nametable script,
   own palettes. The other 24 are the kept coarse grid inside the silhouette (see Next).
+- **Live page checked** (headless Edge against github.io): boots, Start + run + jump work, audio carries signal.
+  Without `?autostart=1` the page waits for one tap (EmulatorJS start button), which also unlocks sound.
 - **Taint**: 0 failing on ROM, site and repo.
 - **For decompgames.com**: `decompgames.json`, `poster.png` (composed from our tiles, no screenshot).
 - No samples and no voices in this game: **practice pack skipped**.
@@ -42,8 +44,9 @@ Update with `sh tools/publish.sh push "message"` (regenerates, assembles, refuse
   castle flag, chain, bubbles, small lifts.
 - Headless level checks: `sh games/smb/shots.sh <name> <W,L,A> "<script>"` (dev ROM starting at any level; seen so
   far: 1-1, 1-2 intro, 1-2, 1-3, 1-4, 2-2 opening screens, all fine).
-- Check Bowser, shells, springboard and the castle in the running game (their stored layout is reordered by code) and
-  redraw from what is seen there.
+- Bowser: halves are placed by code (rear 16 px behind, 8 px lower); `python -m games.smb.bowser_view out.png` shows
+  him assembled. Drawn and checked in that preview, not yet seen in the running game (needs a play to the end of x-4).
+- Shells and springboard: stored layout is reordered by code; check in the running game.
 - A finer title logo (letters with a drop shadow).
 
 ## For the morning
