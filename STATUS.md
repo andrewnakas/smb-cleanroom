@@ -48,7 +48,8 @@ Update with `sh tools/publish.sh push "message"` (regenerates, assembles, refuse
 - Bowser: halves are placed by code (rear 16 px behind, 8 px lower); `python -m games.smb.bowser_view out.png` shows
   him assembled. Drawn and checked in that preview, not yet seen in the running game (needs a play to the end of x-4).
 - Shells: the tables are drawn with a vertical flip; art was laid out for that but not yet seen in the running game.
-- A finer title logo (letters with a drop shadow).
+- Title letters are now built from small studs (dark lower/right edge per cell); a hand-lettered logo would need
+  more than the 39 free tiles.
 
 ## For the morning
 - Look at: the live page, `poster.png`, and `python -m games.smb.sheet png sheet.png` for all art at once.

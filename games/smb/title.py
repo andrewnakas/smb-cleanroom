@@ -34,6 +34,8 @@ def tiles():
         for b, (y, x) in enumerate([(0, 0), (0, 4), (4, 0), (4, 4)]):
             if m >> b & 1:
                 t[y:y + 4, x:x + 4] = INK
+                t[y + 3, x:x + 4] = EDGE            # each cell is a small stud: dark lower and right edge
+                t[y:y + 4, x + 3] = EDGE
         out[QUAD[m]] = t
     # frame: 2 px black line with a sand highlight inside it, rounded corners
     def edge(side):
