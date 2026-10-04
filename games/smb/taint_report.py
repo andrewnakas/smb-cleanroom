@@ -5,7 +5,8 @@
 Prints one screen and "TAINT: n failing". Rules (logged in STATUS.md):
   T1 raw     any 16-byte window of retail CHR pixels (>= 6 distinct byte values) found in the clean ROM
              or in any file of the given trees -> fail
-             (forgiven: windows lying in T2 coincidence tiles, bar <= 6 bytes or <= 2 distinct values outside them)
+             (forgiven: windows whose bytes are implied by kept facts, i.e. lie in T2 coincidence tiles or in pixel
+             rows with <= 1 non-zero colour, bar <= 6 bytes or <= 2 distinct values elsewhere)
   T2 tile    a clean tile equal to any retail tile (any slot, any flip):
              - picture tile with >= 2 non-zero colours                                 -> fail
              - picture tile with <= 1 non-zero colour: it IS the kept silhouette       -> coincidence, counted
@@ -75,8 +76,14 @@ def main(argv):
             return T.scan_bytes(win, blob)
         base = len(blob) - 8192
 
-        def outside(o):          # window bytes that are not inside a coincidence tile
-            return bytes(blob[k] for k in range(o, o + T.WINDOW) if k < base or (k - base) // 16 not in coinc)
+        def implied(k):          # is this byte fixed by kept facts? (coincidence tile, or a row with <= 1 non-zero colour:
+            if k < base:         #  one plane = the silhouette row, the other = 0 or the same)
+                return False
+            t, row = (k - base) // 16, (k - base) % 8
+            return t in coinc or (t < len(ct) and len(set(ct[t][row].tolist()) - {0}) <= 1)
+
+        def outside(o):
+            return bytes(blob[k] for k in range(o, o + T.WINDOW) if not implied(k))
 
         return [o for o in T.scan_bytes(win, blob) if len(outside(o)) > 6 and len(set(outside(o))) > 2]
 
@@ -90,7 +97,8 @@ def main(argv):
                 if n:
                     tree_hits.append((os.path.join(d, f), n))
     fails += (1 if h else 0) + len(tree_hits)
-    lines.append(f"T1 raw windows: {len(win)} retail windows; clean ROM hits {len(h)}; tree files hit {len(tree_hits)}"
+    lines.append(f"T1 raw windows: {len(win)} retail windows; clean ROM hits {len(h)}"
+                 f" (tiles {' '.join(sorted({format((o - len(clean) + 8192) // 16, '03x') for o in h}))}); tree files hit {len(tree_hits)}"
                  + "".join(f"\n     {p} x{n}" for p, n in tree_hits[:8]))
     lines.append(t2)
 
@@ -113,7 +121,7 @@ def main(argv):
         worst.append((agree, rep, nd, p["name"], f))
     worst.sort(reverse=True)
     fails += pfail
-    lines.append(f"T3 pictures: {pfail} failing of {len(worst)}; mean agreement {np.mean([w[0] for w in worst]):.2f}; closest: "
+    lines.append(f"T3 pictures: {pfail} failing ({' '.join(w[3] for w in worst if w[4])}) of {len(worst)}; mean agreement {np.mean([w[0] for w in worst]):.2f}; closest: "
                  + ", ".join(f"{n} {a:.2f}/{r:.2f}" for a, r, d, n, f in worst[:(40 if verbose else 5)]))
 
     # T4

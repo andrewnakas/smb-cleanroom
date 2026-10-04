@@ -29,13 +29,16 @@ def load_art():
             if line.startswith("@"):
                 name = line[1:].strip()
                 out[name] = []
-            elif line.startswith("#") or name is None:
+            elif (line.startswith("#") and not line.startswith("##")) or name is None:
                 continue
             elif line.strip() or out[name]:
                 out[name].append(line.rstrip("\r"))
     for k in out:
         while out[k] and not out[k][-1].strip():
             out[k].pop()
+    from games.smb import bg_art
+    for k, f in bg_art.CODE.items():
+        out.setdefault(k, f())
     return out
 
 
@@ -69,6 +72,8 @@ def render(p, spec, art) -> np.ndarray:
     name = p["name"]
     h, w = len(p["layout"]) * 8, len(p["layout"][0]) * 8
     s = spec.get(name)
+    if name in OWN:
+        return OWN[name]()
     if s is None:                                   # own / glyph: free drawing
         return np.where(parse(art.get(name, []), w, h) == 255, 0, parse(art.get(name, []), w, h))
     if "uniform" in s:
@@ -76,10 +81,54 @@ def render(p, spec, art) -> np.ndarray:
     base = baseline(s)
     if name not in art:
         return base
-    a = parse(art[name], w, h)
+    rows = [r for r in art[name] if not r.startswith("!")]
+    a = parse(rows, w, h)
     sil = base > 0
     out = np.where((a == 255) | (a == 0), base, a)
+    for d in (r for r in art[name] if r.startswith("!")):
+        k = d[1:].split()
+        if k[0] == "outline":                       # !outline <colour> [nobottom] [notop] [noleft] [noright] [inner]
+            pad = np.pad(sil, 1, constant_values="inner" in k)
+            if "inner" not in k:
+                if "nobottom" in k:
+                    pad[-1, :] = True
+                if "notop" in k:
+                    pad[0, :] = True
+                if "noleft" in k:
+                    pad[:, 0] = True
+                if "noright" in k:
+                    pad[:, -1] = True
+            edge = sil & ~(pad[:-2, 1:-1] & pad[2:, 1:-1] & pad[1:-1, :-2] & pad[1:-1, 2:])
+            out = np.where(edge, int(k[1]), out)
+        elif k[0] == "edge":                        # !edge <colour> <dirs from l r t b>: pixels whose neighbour that way is empty
+            pad = np.pad(sil, 1, constant_values=False)
+            nb = {"t": pad[:-2, 1:-1], "b": pad[2:, 1:-1], "l": pad[1:-1, :-2], "r": pad[1:-1, 2:]}
+            for d_ in k[2]:
+                out = np.where(sil & ~nb[d_], int(k[1]), out)
     return np.where(sil, out, 0).astype(np.uint8)
+
+
+# 3x6 numerals for the score popups (own design; a tile holds two of them)
+_NUM = {"0": "111 101 101 101 101 111", "1": "010 110 010 010 010 111", "2": "111 001 111 100 100 111",
+        "4": "101 101 101 111 001 001", "5": "111 100 111 001 001 111", "8": "111 101 111 101 101 111",
+        "U": "101 101 101 101 101 111", "P": "111 101 111 100 100 100", " ": "000 000 000 000 000 000"}
+
+
+def _numerals(text, colour=2):
+    out = np.zeros((8, 4 * len(text)), np.uint8)
+    for i, ch in enumerate(text):
+        for y, r in enumerate(_NUM[ch].split()):
+            for x, c in enumerate(r):
+                if c == "1":
+                    out[1 + y, 4 * i + x] = colour
+    return out
+
+
+OWN = {
+    "score_100_8000": lambda: _numerals("10204050800 "),      # 100 = "10" + "0 ", 1000 = "10" + "00"
+    "score_00": lambda: _numerals("00"),
+    "score_1up": lambda: _numerals("1UP "),
+}
 
 
 def ascii_of(img, owned=None) -> str:

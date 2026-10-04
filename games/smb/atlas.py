@@ -86,7 +86,8 @@ SPRITES_EXTRA = [
     ("score_1up", 2, [[0xFD, 0xFE]]),
     ("misc_ff", 2, [[0xFF]]),
     ("bowser_flame", 1, [[0x51, 0x52, 0x53]]),
-    ("misc_50", 0, [[0x50, 0x54], [0x55, 0x56], [0x57, None]]),
+    ("score_00", 2, [[0x50]]),
+    ("misc_54", 0, [[0x54, 0x55], [0x56, 0x57]]),
 ]
 
 BACKGROUND = [
@@ -164,7 +165,7 @@ def pictures():
         if "front" in c:                                                  # bowser: front + rear halves side by side
             rear = [[None if v == 0xFC else v for v in en[k + 1][0][i:i + 2]] for i in (0, 2, 4)]
             g = [[None if v == 0xFC else v for v in vals[i:i + 2]] for i in (0, 2, 4)]
-            g = [x + y for x, y in zip(g, rear)]
+            g = [y + x for x, y in zip(g, rear)]                          # stored facing right: rear is the left half
             add(_name("enemy", c.replace("front ", ""), seen), 0, 1, g)
             continue
         add(_name("enemy", c, seen), 0, 1, g, _mirror(g))

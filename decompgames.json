@@ -1,0 +1,55 @@
+{
+ "id": "super-mario-bros",
+ "title": "Super Mario Bros.",
+ "aliases": [
+  "smb",
+  "smb1",
+  "super-mario-bros-nes"
+ ],
+ "year": 1985,
+ "genre": "Platformer",
+ "kind": "Decompilation",
+ "mode": "embed",
+ "engine": "the community SMB disassembly on EmulatorJS (FCEUmm)",
+ "description": "Run, jump and stomp through eight worlds to reach the last castle.",
+ "overview": "Super Mario Bros. running in the browser from the community disassembly on EmulatorJS (FCEUmm). Every tile in the game — the player, enemies, blocks, scenery, font and title board — and every palette has been redrawn by the clean-room pipeline from coarse facts, so the build ships no original ROM or artwork. Music and sound effects are the original note sequences played by the NES sound channels.",
+ "source": "https://github.com/andrewnakas/smb-cleanroom",
+ "engineLicense": "See the upstream project and the clean-room repository",
+ "assetLicense": "Regenerated clean-room assets; no retail data is distributed",
+ "assetRequirements": "No original game files needed.",
+ "controls": [
+  "Arrow keys — D-pad",
+  "X — A (jump)",
+  "Z — B (run, fireball)",
+  "Enter — Start",
+  "Shift — Select",
+  "Gamepad — any standard controller, detected automatically",
+  "Touch — on-screen NES pad on phones and tablets when no controller is connected"
+ ],
+ "saveInstructions": "The game has no save. Save states from the emulator menu are stored in this browser, under andrewnakas.github.io. Clearing site data removes them.",
+ "limitations": [
+  "Regenerated pictures and colours differ from the retail game by design.",
+  "Some rarely seen sprites and scenery are still coarse placeholders."
+ ],
+ "inputs": [
+  "Gamepad",
+  "Keyboard",
+  "Touch"
+ ],
+ "downloadMB": 2,
+ "complete": false,
+ "color": "#e0522f",
+ "shelf": "cleanroom",
+ "platform": "NES",
+ "launch": "embed",
+ "touch": true,
+ "embedUrl": "https://andrewnakas.github.io/smb-cleanroom/",
+ "verification": {
+  "status": "gameplay-tested",
+  "date": null,
+  "browsers": [],
+  "scope": "Headless tests booted the build with sound, started a 1 player game and ran and jumped through the first part of World 1-1.",
+  "playthrough": false
+ },
+ "image": "/images/super-mario-bros.png"
+}
