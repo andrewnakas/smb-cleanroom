@@ -9,9 +9,9 @@ Update with `sh tools/publish.sh push "message"` (regenerates, assembles, refuse
   boots to the title, Start begins a 1 player game, runs / jumps through 1-1, audio buffers carry signal.
   Keyboard, gamepad and EmulatorJS's touch pad; one tap starts game and sound; works in an iframe.
 - **Round trip**: the disassembly + retail CHR assembles to PRG/CHR identical to the retail dump (dirty room only).
-- **Art**: 86 of 117 pictures hand-drawn (all player frames, all common enemies, power-ups, blocks, pipes, clouds,
-  hills, trees, castle pieces), own font (40 glyphs), own score popups, own title board + nametable script,
-  own palettes. The other 31 are the kept coarse grid inside the silhouette (see Next).
+- **Art**: 93 of 117 pictures hand-drawn (all player frames, all common enemies, power-ups, blocks, pipes, clouds,
+  hills, trees, castle, coral, cannon, axe, giant mushroom, explosion, vine), own font (40 glyphs), own score popups, own title board + nametable script,
+  own palettes. The other 24 are the kept coarse grid inside the silhouette (see Next).
 - **Taint**: 0 failing on ROM, site and repo.
 - **For decompgames.com**: `decompgames.json`, `poster.png` (composed from our tiles, no screenshot).
 - No samples and no voices in this game: **practice pack skipped**.
@@ -38,11 +38,12 @@ Update with `sh tools/publish.sh push "message"` (regenerates, assembles, refuse
 7. Repo-local git identity set to the one the sibling repos use (andre / treesixtyweather@gmail.com).
 
 ## Next
-- Draw the 31 baseline pictures: explosion, hammer, springboard, spiny egg, vine, giant-mushroom ledge, coral,
-  pulley, cannon, water, bridge over lava, axe, underwater coin, castle flag.
+- Draw the 24 baseline pictures: hammer, springboard, spiny egg, pulley, water surface, sea rock, bridge over lava,
+  castle flag, chain, bubbles, small lifts.
+- Headless level checks: `sh games/smb/shots.sh <name> <W,L,A> "<script>"` (dev ROM starting at any level; seen so
+  far: 1-1, 1-2 intro, 1-2, 1-3, 1-4, 2-2 opening screens, all fine).
 - Check Bowser, shells, springboard and the castle in the running game (their stored layout is reordered by code) and
   redraw from what is seen there.
-- Longer headless play (worlds 1-2, 2-2, 1-4) for palette checks under ground / water / castle.
 - A finer title logo (letters with a drop shadow).
 
 ## For the morning

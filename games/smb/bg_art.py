@@ -151,3 +151,14 @@ def fence():
 
 CODE = {f.__name__: f for f in (pipe_up, pipe_side, cloud_bush, hill, tree, tree_ledge, brick, castle_parts, ground,
                                 stair_block, qblock, used_block, fence)}
+
+
+def mushroom_ledge():
+    """giant mushroom platform: 1 = spots, 2 = cap, 3 = black line; stem below the middle"""
+    spot = {4: "22112222", 5: "21111222", 6: "21111222", 7: "22112222", 9: "22222112", 10: "22221111", 11: "22222112"}
+    cap = [(spot.get(y, "22222222")) * 6 for y in range(16)]
+    stem = ["." * 16 + "1121111111111211" + "." * 16] * 8
+    return ["!outline 3 nobottom"] + cap + stem
+
+
+CODE["mushroom_ledge"] = mushroom_ledge
