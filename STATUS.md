@@ -9,11 +9,12 @@ Update with `sh tools/publish.sh push "message"` (regenerates, assembles, refuse
   boots to the title, Start begins a 1 player game, runs / jumps through 1-1, audio buffers carry signal.
   Keyboard, gamepad and EmulatorJS's touch pad; one tap starts game and sound; works in an iframe.
 - **Round trip**: the disassembly + retail CHR assembles to PRG/CHR identical to the retail dump (dirty room only).
-- **Art**: 93 of 117 pictures hand-drawn (all player frames, all common enemies, power-ups, blocks, pipes, clouds,
+- **Art**: 96 of 117 pictures hand-drawn (all player frames, all common enemies, power-ups, blocks, pipes, clouds,
   hills, trees, castle, coral, cannon, axe, giant mushroom, explosion, vine), own font (40 glyphs), own score popups, own title board + nametable script,
-  own palettes. The other 24 are the kept coarse grid inside the silhouette (see Next).
+  own palettes. The other 21 are the kept coarse grid inside the silhouette (see Next).
 - **Live page checked** (headless Edge against github.io): boots, Start + run + jump work, audio carries signal.
   Without `?autostart=1` the page waits for one tap (EmulatorJS start button), which also unlocks sound.
+- **Attract demo** (no input for 15 s) plays 1-1 by itself: coin pop, used block, 200 popup, goomba stomp all draw.
 - **Taint**: 0 failing on ROM, site and repo.
 - **For decompgames.com**: `decompgames.json`, `poster.png` (composed from our tiles, no screenshot).
 - No samples and no voices in this game: **practice pack skipped**.
@@ -40,13 +41,13 @@ Update with `sh tools/publish.sh push "message"` (regenerates, assembles, refuse
 7. Repo-local git identity set to the one the sibling repos use (andre / treesixtyweather@gmail.com).
 
 ## Next
-- Draw the 24 baseline pictures: hammer, springboard, spiny egg, pulley, water surface, sea rock, bridge over lava,
+- Draw the 21 baseline pictures: hammer, spiny egg, pulley, water surface, sea rock, bridge over lava,
   castle flag, chain, bubbles, small lifts.
 - Headless level checks: `sh games/smb/shots.sh <name> <W,L,A> "<script>"` (dev ROM starting at any level; seen so
   far: 1-1, 1-2 intro, 1-2, 1-3, 1-4, 2-2 opening screens, all fine).
 - Bowser: halves are placed by code (rear 16 px behind, 8 px lower); `python -m games.smb.bowser_view out.png` shows
   him assembled. Drawn and checked in that preview, not yet seen in the running game (needs a play to the end of x-4).
-- Shells and springboard: stored layout is reordered by code; check in the running game.
+- Shells: the tables are drawn with a vertical flip; art was laid out for that but not yet seen in the running game.
 - A finer title logo (letters with a drop shadow).
 
 ## For the morning
